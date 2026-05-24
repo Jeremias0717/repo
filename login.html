@@ -3,65 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicia sesión</title>
+    <title>Urbee - Sign In</title>
     <!-- Vincula este archivo HTML con la hoja de estilos externa -->
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
-    <!-- Contenedor general -->
+    <!-- Contenedor general que agrupa la tarjeta de login completa -->
     <div class="login-container">
         
-        <!-- parte IZQUIERDA Contiene todo el formulario y textos -->
+        <!-- SECCIÓN IZQUIERDA: Contiene todo el formulario y textos -->
         <div class="form-section">
             
-            <!-- Nombre del restaurante -->
-            <div class="logo">Restaurante</div>
+            <!-- Logo principal de la marca -->
+            <div class="logo">urbee</div>
             
-            <!-- Título de bienvenida  -->
-            <h1 class="main-title">Bienvenido de nuevo</h1>
+            <!-- Título de bienvenida principal -->
+            <h1 class="main-title">Welcome Back</h1>
             
-            <!-- descripción debajo del título -->
-            <p class="subtitle">Inicia sesión con tu dirección de correo electrónico y contraseña.</p>
+            <!-- Subtítulo descriptivo debajo del título -->
+            <p class="subtitle">Sign in with your email address and Password.</p>
             
-            <!-- Menu principal -->
+            <!-- Formulario de inicio de sesión (Apunta a proyecto.html al dar submit) -->
             <form class="login-form" action="proyecto.html">
                 
-                <!-- Etiqueta de correo electrónico -->
-                <label>Correo Electrónico</label>
+                <!-- Etiqueta del campo de correo electrónico -->
+                <label>Email Address</label>
                 
-                <!-- verificar correo -->
-                <div class="verified">
-                    <input type="email" value="" required>
+                <!-- Contenedor relativo especial para añadir el check verde sobre el input -->
+                <div class="input-wrapper verified">
+                    <input type="email" value="johndoe123@xyz.com" required>
                 </div>
                 
-                <!-- Etiqueta de contraseña -->
-                <label>Contraseña</label>
-                <!-- Campo de contraseña -->
-                <input type="password" value="" required>
+                <!-- Etiqueta del campo de contraseña -->
+                <label>Password</label>
+                <!-- Campo de contraseña (esconde los caracteres con puntos) -->
+                <input type="password" value="••••••••••••" required>
                 
-                <!-- Bloque de opciones inferiores de Recordarme y Olvidé mi contraseña) -->
+                <!-- Bloque de opciones inferiores (Recordarme y Olvidé mi contraseña) -->
                 <div class="form-options">
-                    <!-- Checkbox de "recuérdame" -->
-                    <label class="recuérdame">
+                    <!-- Checkbox de "Remember me" envuelto en un label para que sea clicable en el texto -->
+                    <label class="remember-me">
                         <input type="checkbox" checked>
-                        <span>recuérdame</span>
+                        <span>Remember me</span>
                     </label>
                     <!-- Enlace para recuperar la contraseña -->
-                    <a href="#">¿Olvidaste tu contraseña?</a>
+                    <a href="#">Forgot Password?</a>
                 </div>
                 
-                <!-- Botón para  enviar el formulario -->
-                <button type="submit" class="btn-login">Iniciar sesión</button>
+                <!-- Botón para procesar y enviar el formulario -->
+                <button type="submit" class="btn-login">Sign In</button>
             </form>
             
-            <!-- Bloque inferior para crear una cuenta-->
+            <!-- Bloque inferior por si el usuario no tiene una cuenta creada -->
             <div class="signup-redirect">
-                ¿No tienes una cuenta? <a href="#">Regístrate</a>
+                Don't have an account? <a href="#">Sign Up</a>
             </div>
         </div>
 
-        <!-- parte DERECHA para la imagen de fondo -->
+        <!-- SECCIÓN DERECHA: Espacio reservado para la imagen de fondo -->
         <div class="image-section"></div>
     </div>
 

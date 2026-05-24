@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box; /* Asegura que el padding no afecte el ancho total de los elementos */
+    /* Respaldo de fuentes nativas del sistema para asegurar carga instantánea sin Google Fonts */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -178,5 +179,5 @@ body {
     width: 60%;               /* Ocupa el 60% restante de la tarjeta */
     background-image: url('login.webp'); /* Llama a tu archivo de imagen local */
     background-size: cover;   /* Escala la imagen para que cubra todo el espacio disponible */
-    background-position: center; /* Centra la imagen para que no se corte mal en pantallas raras */
+    background-position: center; /* Centra la imagen para que no se corte mal */
 }
