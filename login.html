@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicia sesión</title>
+    <!-- Vincula este archivo HTML con la hoja de estilos externa -->
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <!-- Contenedor general -->
+    <div class="login-container">
+        
+        <!-- parte IZQUIERDA Contiene todo el formulario y textos -->
+        <div class="form-section">
+            
+            <!-- Nombre del restaurante -->
+            <div class="logo">Restaurante</div>
+            
+            <!-- Título de bienvenida  -->
+            <h1 class="main-title">Bienvenido de nuevo</h1>
+            
+            <!-- descripción debajo del título -->
+            <p class="subtitle">Inicia sesión con tu dirección de correo electrónico y contraseña.</p>
+            
+            <!-- Menu principal -->
+            <form class="login-form" action="proyecto.html">
+                
+                <!-- Etiqueta de correo electrónico -->
+                <label>Correo Electrónico</label>
+                
+                <!-- verificar correo -->
+                <div class="verified">
+                    <input type="email" value="" required>
+                </div>
+                
+                <!-- Etiqueta de contraseña -->
+                <label>Contraseña</label>
+                <!-- Campo de contraseña -->
+                <input type="password" value="" required>
+                
+                <!-- Bloque de opciones inferiores de Recordarme y Olvidé mi contraseña) -->
+                <div class="form-options">
+                    <!-- Checkbox de "recuérdame" -->
+                    <label class="recuérdame">
+                        <input type="checkbox" checked>
+                        <span>recuérdame</span>
+                    </label>
+                    <!-- Enlace para recuperar la contraseña -->
+                    <a href="#">¿Olvidaste tu contraseña?</a>
+                </div>
+                
+                <!-- Botón para  enviar el formulario -->
+                <button type="submit" class="btn-login">Iniciar sesión</button>
+            </form>
+            
+            <!-- Bloque inferior para crear una cuenta-->
+            <div class="signup-redirect">
+                ¿No tienes una cuenta? <a href="#">Regístrate</a>
+            </div>
+        </div>
+
+        <!-- parte DERECHA para la imagen de fondo -->
+        <div class="image-section"></div>
+    </div>
+
+</body>
+</html>
