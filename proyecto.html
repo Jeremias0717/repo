@@ -1,19 +1,703 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Trello Simple</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trello Clone - Gestión de Proyectos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #172b4d;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .add-board-btn {
+            background: #5aac44;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .add-board-btn:hover {
+            background: #4d9a3a;
+        }
+
+        .boards-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+
+        .board {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            min-width: 1100px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .board-header {
+            padding: 20px;
+            border-bottom: 2px solid #ebecf0;
+            background: #f4f5f7;
+            border-radius: 12px 12px 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .board-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #172b4d;
+            margin-bottom: 10px;
+        }
+
+        .board-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #6b778c;
+        }
+
+        .delete-board {
+            background: #eb5a46;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .lists-container {
+            padding: 20px;
+            display: flex;
+            gap: 16px;
+            min-height: 400px;
+        }
+
+        .list {
+            background: #ebecf0;
+            border-radius: 8px;
+            flex: 1;
+            min-height: 400px;
+            max-width: 350px;
+        }
+
+        .list-header {
+            padding: 16px;
+            background: white;
+            border-radius: 8px 8px 0 0;
+            border-bottom: 2px solid #dfe1e6;
+            font-weight: 600;
+            color: #172b4d;
+            font-size: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .list-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-icon {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .status-pendiente { background: #ffab00; }
+        .status-proceso { background: #0052cc; }
+        .status-completado { background: #5aac44; }
+
+        .cards-container {
+            padding: 16px;
+            min-height: 300px;
+            transition: all 0.3s ease;
+        }
+
+        .cards-container.drag-over {
+            background: rgba(29, 161, 242, 0.1) !important;
+            border: 3px dashed #1da1f2;
+            border-radius: 8px;
+        }
+
+        .add-card-btn {
+            background: rgba(9,30,66,.04);
+            color: #3979f1;
+            border: 2px dashed #c4c9ff;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
+        .add-card-btn:hover {
+            background: #3979f1;
+            color: white;
+            border-color: #3979f1;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(9,30,66,.25);
+            cursor: grab;
+            position: relative;
+            transition: all 0.3s ease;
+            border-left: 4px solid #ebecf0;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 16px rgba(9,30,66,.3);
+            transform: translateY(-2px);
+        }
+
+        .card.status-pendiente { border-left-color: #ffab00; }
+        .card.status-proceso { border-left-color: #0052cc; }
+        .card.status-completado { border-left-color: #5aac44; }
+
+        .card:active {
+            cursor: grabbing;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #172b4d;
+            margin-bottom: 8px;
+            word-break: break-word;
+        }
+
+        .card-description {
+            font-size: 13px;
+            color: #6b778c;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .card-date {
+            font-size: 11px;
+            color: #9fadc0;
+        }
+
+        .delete-card {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #eb5a46;
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 14px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card:hover .delete-card {
+            opacity: 1;
+        }
+
+        .input-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(9,30,66,.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .input-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #172b4d;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ebecf0;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            outline: none;
+            border-color: #3979f1;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .btn-primary {
+            background: #5aac44;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #6b778c;
+            border: 2px solid #ebecf0;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .boards-container {
+                flex-direction: column;
+            }
+            
+            .board {
+                min-width: 100%;
+            }
+            
+            .lists-container {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Mi Tablero</h1>
-    <button id="addListBtn">+ Añadir Lista</button>
-  </header>
+    <div class="app-container">
+        <div class="header">
+            <h1>🚀 Mi Trello Pro</h1>
+            <button class="add-board-btn" onclick="showAddBoardModal()">+ Nuevo Proyecto</button>
+        </div>
+        
+        <div class="boards-container" id="boardsContainer">
+            <!-- Los tableros se generarán aquí dinámicamente -->
+        </div>
+    </div>
 
-  <main id="board"></main>
+    <!-- Modal para agregar tablero -->
+    <div id="addBoardModal" class="input-modal" style="display: none;">
+        <div class="input-modal-content">
+            <h2>🌟 Nuevo Proyecto</h2>
+            <div class="input-group">
+                <label>Nombre del proyecto</label>
+                <input type="text" id="boardTitleInput" placeholder="Ej: Desarrollo App Móvil">
+            </div>
+            <div style="font-size: 14px; color: #6b778c; margin-top: 10px;">
+                ✅ Se crearán automáticamente las listas: Pendientes, En proceso, Completados
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-secondary" onclick="hideAddBoardModal()">Cancelar</button>
+                <button class="btn-primary" onclick="createBoard()">Crear Proyecto</button>
+            </div>
+        </div>
+    </div>
 
-  <script src="script.js"></script>
+    <!-- Modal para editar tarjeta -->
+    <div id="editCardModal" class="input-modal" style="display: none;">
+        <div class="input-modal-content">
+            <h2>✏️ Editar Tarea</h2>
+            <div class="input-group">
+                <label>Título</label>
+                <input type="text" id="cardTitleInput">
+            </div>
+            <div class="input-group">
+                <label>Descripción</label>
+                <textarea id="cardDescInput" rows="4" placeholder="Describe la tarea en detalle..."></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-secondary" onclick="hideEditCardModal()">Cancelar</button>
+                <button class="btn-primary" onclick="saveCard()">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let boards = JSON.parse(localStorage.getItem('trello-boards')) || [];
+        let currentEditingCard = null;
+        let currentBoardId = null;
+        let currentListId = null;
+
+        // Listas predeterminadas
+        const DEFAULT_LISTS = [
+            { id: 1, title: '📋 Pendientes', status: 'pendiente', cards: [] },
+            { id: 2, title: '⚡ En proceso', status: 'proceso', cards: [] },
+            { id: 3, title: '✅ Completados', status: 'completado', cards: [] }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderBoards();
+            setupDragAndDrop();
+        });
+
+        function showAddBoardModal() {
+            document.getElementById('addBoardModal').style.display = 'flex';
+            document.getElementById('boardTitleInput').focus();
+        }
+
+        function hideAddBoardModal() {
+            document.getElementById('addBoardModal').style.display = 'none';
+            document.getElementById('boardTitleInput').value = '';
+        }
+
+        function createBoard() {
+            const title = document.getElementById('boardTitleInput').value.trim();
+            if (!title) return;
+
+            const board = {
+                id: Date.now(),
+                title: title,
+                lists: [...DEFAULT_LISTS] // Copia las listas predeterminadas
+            };
+
+            boards.push(board);
+            saveData();
+            renderBoards();
+            hideAddBoardModal();
+        }
+
+        function showEditCardModal(card, boardId, listId) {
+            currentEditingCard = card;
+            currentBoardId = boardId;
+            currentListId = listId;
+            
+            document.getElementById('cardTitleInput').value = card.title || '';
+            document.getElementById('cardDescInput').value = card.description || '';
+            document.getElementById('editCardModal').style.display = 'flex';
+            document.getElementById('cardTitleInput').focus();
+        }
+
+        function hideEditCardModal() {
+            document.getElementById('editCardModal').style.display = 'none';
+            currentEditingCard = null;
+        }
+
+        function saveCard() {
+            if (!currentEditingCard || !currentBoardId || !currentListId) return;
+
+            currentEditingCard.title = document.getElementById('cardTitleInput').value.trim();
+            currentEditingCard.description = document.getElementById('cardDescInput').value.trim();
+            currentEditingCard.updatedAt = new Date().toISOString();
+
+            saveData();
+            renderBoard(currentBoardId);
+            hideEditCardModal();
+        }
+
+        function deleteCard(cardId, boardId, listId) {
+            if (confirm('¿Eliminar esta tarea?')) {
+                const board = boards.find(b => b.id === boardId);
+                if (board) {
+                    const list = board.lists.find(l => l.id === listId);
+                    if (list) {
+                        list.cards = list.cards.filter(c => c.id !== cardId);
+                        saveData();
+                        renderBoard(boardId);
+                    }
+                }
+            }
+        }
+
+        function renderBoards() {
+            const container = document.getElementById('boardsContainer');
+            if (boards.length === 0) {
+                container.innerHTML = `
+                    <div style="padding: 60px 40px; text-align: center; color: #6b778c; background: white; border-radius: 12px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">🎯</div>
+                        <h3>¡Crea tu primer proyecto!</h3>
+                        <p>Se generarán automáticamente las columnas: Pendientes → En proceso → Completados</p>
+                        <button class="add-board-btn" onclick="showAddBoardModal()" style="margin-top: 24px; padding: 16px 32px; font-size: 16px;">
+                            + Crear mi primer proyecto
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = boards.map(board => `
+                <div class="board" data-board-id="${board.id}">
+                    <div class="board-header">
+                        <div>
+                            <div class="board-title">${board.title}</div>
+                            <div class="board-stats">
+                                ${board.lists.map(list => 
+                                    `<span>${list.title} <strong>(${list.cards.length})</strong></span>`
+                                ).join(' | ')}
+                            </div>
+                        </div>
+                        <button class="delete-board" onclick="deleteBoard(${board.id})">🗑️ Eliminar</button>
+                    </div>
+                    <div class="lists-container">
+                        ${board.lists.map(list => renderList(list, board.id)).join('')}
+                    </div>
+                </div>
+            `).join('');
+            
+            setupDragAndDrop();
+        }
+
+        function renderList(list, boardId) {
+            return `
+                <div class="list" data-list-id="${list.id}" data-board-id="${boardId}">
+                    <div class="list-header list-status">
+                        <span class="status-icon status-${list.status}"></span>
+                        ${list.title}
+                        <span style="margin-left: auto; font-weight: 500; color: #6b778c;">
+                            ${list.cards.length}
+                        </span>
+                    </div>
+                    <div class="cards-container" data-list-id="${list.id}">
+                        ${list.cards.map(card => renderCard(card, boardId, list.id, list.status)).join('')}
+                        <button class="add-card-btn" onclick="showAddCardModal(${boardId}, ${list.id})">
+                            + Añadir nueva tarea
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCard(card, boardId, listId, status) {
+            return `
+                <div class="card status-${status}" 
+                     data-card-id="${card.id}" 
+                     data-board-id="${boardId}" 
+                     data-list-id="${listId}"
+                     draggable="true"
+                     ondblclick="showEditCardModal(${JSON.stringify(card).replace(/"/g, '&quot;')}, ${boardId}, ${listId})">
+                    <button class="delete-card" onclick="deleteCard(${card.id}, ${boardId}, ${listId}); event.stopPropagation();">×</button>
+                    <div class="card-title">${card.title}</div>
+                    ${card.description ? `<div class="card-description">${card.description}</div>` : ''}
+                    <div class="card-date">
+                        ${new Date(card.updatedAt).toLocaleDateString('es-ES')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderBoard(boardId) {
+            const board = boards.find(b => b.id === boardId);
+            if (board) {
+                const boardElement = document.querySelector(`[data-board-id="${boardId}"]`);
+                if (boardElement) {
+                    boardElement.querySelector('.lists-container').innerHTML = 
+                        board.lists.map(list => renderList(list, boardId)).join('');
+                    setupDragAndDrop();
+                }
+            }
+        }
+
+        function deleteBoard(boardId) {
+            if (confirm('¿Eliminar este proyecto completo?')) {
+                boards = boards.filter(b => b.id !== boardId);
+                saveData();
+                renderBoards();
+            }
+        }
+
+        function showAddCardModal(boardId, listId) {
+            const title = prompt('Nombre de la nueva tarea:');
+            if (title) {
+                const board = boards.find(b => b.id === boardId);
+                if (board) {
+                    const list = board.lists.find(l => l.id === listId);
+                    if (list) {
+                        list.cards.unshift({
+                            id: Date.now(),
+                            title: title,
+                            description: '',
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString()
+                        });
+                        saveData();
+                        renderBoard(boardId);
+                    }
+                }
+            }
+        }
+
+        // Drag & Drop mejorado
+        function setupDragAndDrop() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('dragstart', handleDragStart);
+                card.addEventListener('dragend', handleDragEnd);
+            });
+
+            const dropZones = document.querySelectorAll('.cards-container');
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('dragenter', handleDragEnter);
+                zone.addEventListener('dragleave', handleDragLeave);
+                zone.addEventListener('drop', handleDrop);
+            });
+        }
+
+        let draggedCard = null;
+
+        function handleDragStart(e) {
+            draggedCard = e.target;
+            e.target.style.opacity = '0.7';
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragEnd(e) {
+            e.target.style.opacity = '1';
+            document.querySelectorAll('.cards-container').forEach(zone => {
+                zone.classList.remove('drag-over');
+            });
+            draggedCard = null;
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            e.target.closest('.cards-container').classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            const zone = e.target.closest('.cards-container');
+            if (!zone.contains(e.relatedTarget)) {
+                zone.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const dropZone = e.target.closest('.cards-container');
+            dropZone.classList.remove('drag-over');
+
+            if (draggedCard && dropZone) {
+                const draggedBoardId = parseInt(draggedCard.dataset.boardId);
+                const draggedListId = parseInt(draggedCard.dataset.listId);
+                const dropBoardId = parseInt(dropZone.dataset.boardId || dropZone.closest('.list').dataset.boardId);
+                const dropListId = parseInt(dropZone.dataset.listId || dropZone.closest('.list').dataset.listId);
+
+                if (draggedBoardId !== dropBoardId || draggedListId !== dropListId) {
+                    moveCard(draggedCard.dataset.cardId, draggedBoardId, draggedListId, dropBoardId, dropListId);
+                }
+            }
+        }
+
+        function moveCard(cardId, fromBoardId, fromListId, toBoardId, toListId) {
+            const fromBoard = boards.find(b => b.id === fromBoardId);
+            const toBoard = boards.find(b => b.id === toBoardId);
+
+            if (fromBoard && toBoard) {
+                const fromList = fromBoard.lists.find(l => l.id === fromListId);
+                const toList = toBoard.lists.find(l => l.id === toListId);
+
+                if (fromList && toList) {
+                    const cardIndex = fromList.cards.findIndex(c => c.id == cardId);
+                    if (cardIndex !== -1) {
+                        const [movedCard] = fromList.cards.splice(cardIndex, 1);
+                        toList.cards.push(movedCard);
+                        movedCard.updatedAt = new Date().toISOString();
+                        saveData();
+                        renderBoard(fromBoardId);
+                        renderBoard(toBoardId);
+                    }
+                }
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('trello-boards', JSON.stringify(boards));
+        }
+
+        // Cerrar modales
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.input-modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideAddBoardModal();
+                hideEditCardModal();
+            }
+        });
+    </script>
 </body>
 </html>
