@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagina Tello</title>
+    <title>Trello </title>
     <style>
+        
         * {
             margin: 0;
             padding: 0;
@@ -17,7 +18,6 @@
             min-height: 100vh;
             padding: 20px;
         }
-
         .app-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -340,16 +340,16 @@
 <body>
     <div class="app-container">
         <div class="header">
-            <h1> Mi Trello Pro</h1>
+            <h1> Mi pagina Trello</h1>
             <button class="add-board-btn" onclick="showAddBoardModal()">+ Nuevo Proyecto</button>
         </div>
         
         <div class="boards-container" id="boardsContainer">
-            <!-- Los tableros se generarán aquí dinámicamente -->
+            <!-- LOS TABLEROS SE MOSTRARÁN AQUÍ -->
         </div>
     </div>
 
-    <!-- Modal para agregar tablero -->
+   <!-- MODAL PARA AGREGAR TABLERO -->
     <div id="addBoardModal" class="input-modal" style="display: none;">
         <div class="input-modal-content">
             <h2> Nuevo Proyecto</h2>
@@ -367,7 +367,7 @@
         </div>
     </div>
 
-    <!-- Modal para editar tarjeta -->
+    <!-- MODAL PARA EDITAR TARJETA -->
     <div id="editCardModal" class="input-modal" style="display: none;">
         <div class="input-modal-content">
             <h2> Editar Tarea</h2>
