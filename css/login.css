@@ -1,113 +1,103 @@
-/* --- Estilos Generales y Fuentes del Sistema --- */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total de los elementos */
-    /* Respaldo de fuentes nativas del sistema para asegurar carga instantánea sin Google Fonts */
+    box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Estilos para el fondo de la pantalla completa */
 body {
     display: flex;
-    justify-content: center; /* Centra la tarjeta horizontalmente */
-    align-items: center;     /* Centra la tarjeta verticalmente */
-    min-height: 100vh;       /* Fuerza al cuerpo a ocupar toda la altura del navegador */
-    background-color: #f4f6f8; /* Color gris claro para el fondo exterior */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f6f8;
 }
 
 /* --- Contenedor Principal (Tarjeta de Login) --- */
 .login-container {
-    display: flex;            /* Alinea la sección del formulario y la de la imagen lado a lado */
-    width: 1020px;            /* Ancho fijo de la tarjeta */
-    height: 620px;            /* Altura fija de la tarjeta */
-    background-color: #ffffff;/* Fondo blanco para el interior de la tarjeta */
-    box-shadow: 0 15px 40px rgba(0,0,0,0.08); /* Sombra suave para dar efecto de elevación */
-}
-
-/* --- Lado Izquierdo (Formulario) --- */
-.form-section {
-    width: 40%;               /* Ocupa el 40% del ancho total de la tarjeta */
-    padding: 50px;            /* Margen interno para separar los elementos de los bordes */
     display: flex;
-    flex-direction: column;   /* Ordena el logo, títulos y form uno debajo del otro */
-    justify-content: center;  /* Centra todo el contenido verticalmente */
+    width: 1020px;
+    height: 620px;
+    background-color: #ffffff;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
 }
 
-/* Estilos del texto del Logo "urbee" */
+/* --- Formulario (Lado Izquierdo) --- */
+.form-section {
+    width: 40%;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .logo {
     font-size: 2.2rem;
     font-weight: 700;
-    letter-spacing: -1px;     /* Junta un poco las letras para igualar el diseño original */
-    margin-bottom: 25px;      /* Separación con el título de abajo */
+    letter-spacing: -1px;
+    margin-bottom: 25px;
 }
 
-/* Estilos del título "Welcome Back" */
 .main-title {
     font-size: 1.8rem;
     font-weight: 600;
     color: #1a1a1a;
-    margin-bottom: 6px;       /* Separación con el subtítulo */
+    margin-bottom: 6px;
 }
 
-/* Estilos del subtítulo gris */
 .subtitle {
     font-size: 0.88rem;
     color: #9e9e9e;
-    margin-bottom: 30px;      /* Separación antes de que empiece el formulario */
+    margin-bottom: 30px;
 }
 
-/* Estilos del contenedor del formulario */
 .login-form {
     display: flex;
-    flex-direction: column;   /* Alinea los labels e inputs verticalmente */
+    flex-direction: column;
 }
 
-/* Estilos de las etiquetas de texto arriba de los inputs */
 .login-form label {
     font-size: 0.78rem;
-    color: #b5b5b5;           /* Color gris muy claro para los labels */
+    color: #b5b5b5;
     font-weight: 500;
-    margin-bottom: 8px;       /* Separación con su respectivo input */
+    margin-bottom: 8px;
 }
 
-/* Reglas comunes de diseño para los campos de texto y contraseña */
+.login-form input[type="text"],
 .login-form input[type="email"],
 .login-form input[type="password"] {
     width: 100%;
-    padding: 14px;            /* Espacio interno para que los campos se vean altos y cómodos */
-    border: none;             /* Quita el borde clásico que pone el navegador */
-    border-radius: 4px;       /* Bordes ligeramente redondeados */
-    background-color: #f7f9fc;/* Fondo grisáceo/azulino muy claro para el interior del input */
+    padding: 14px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f7f9fc;
     font-size: 0.9rem;
     color: #333333;
-    outline: none;            /* Quita el contorno por defecto al dar clic en el campo */
-    margin-bottom: 20px;      /* Separación con el siguiente elemento */
+    outline: none;
+    margin-bottom: 20px;
 }
 
-/* Contenedor relativo necesario para posicionar el check verde sobre el correo */
 .input-wrapper {
     position: relative;
     width: 100%;
 }
 
-/* Evita que el input sume un doble margen inferior cuando está dentro del wrapper */
 .input-wrapper input {
     margin-bottom: 0 !important;
 }
 
-/* Pseudo-elemento que dibuja el círculo verde con el check de verificación */
+/* Círculo verde con check de verificación para campos validados */
 .input-wrapper.verified::after {
-    content: "✓";             /* Carácter del check */
-    position: absolute;       /* Posicionamiento libre flotante */
-    right: 14px;              /* Lo empuja hacia el borde derecho del input */
-    top: 50%;                 /* Lo centra verticalmente */
-    transform: translateY(-50%); /* Ajuste fino de centrado vertical */
+    content: "✓";
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
     width: 18px;
     height: 18px;
-    background-color: #4ca136;/* Color verde oliva de Urbee */
-    color: #ffffff;           /* Check de color blanco */
-    border-radius: 50%;       /* Lo transforma en un círculo perfecto */
+    background-color: #4ca136;
+    color: #ffffff;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -115,69 +105,63 @@ body {
     font-weight: bold;
 }
 
-/* --- Opciones Inferiores (Remember me / Forgot) --- */
+/* --- Opciones Inferiores y Botón --- */
 .form-options {
     display: flex;
-    justify-content: space-between; /* Envía "Remember me" a la izquierda y el link a la derecha */
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;      /* Separación antes del botón */
+    margin-bottom: 25px;
 }
 
-/* Estructura del Checkbox */
 .remember-me {
     display: flex;
     align-items: center;
-    gap: 8px;                 /* Separa el cuadrito del texto */
+    gap: 8px;
     font-size: 0.85rem;
     color: #555550;
     font-weight: 600;
-    cursor: pointer;          /* Cambia el cursor a mano al pasar por encima */
+    cursor: pointer;
 }
 
-/* Pinta el cuadrito nativo del checkbox en color verde */
 .remember-me input {
-    accent-color: #4ca136;    /* Cambia el color nativo a verde oliva */
-    transform: scale(1.1);    /* Lo agranda un poquito para que sea más visible */
+    accent-color: #4ca136;
+    transform: scale(1.1);
 }
 
-/* Estilos para el enlace "Forgot Password?" */
 .form-options a {
     font-size: 0.82rem;
     color: #b5b5b5;
-    text-decoration: none;    /* Quita la línea de subrayado */
+    text-decoration: none;
 }
 
-/* --- Botón Verde de Registro --- */
 .btn-login {
-    width: 45%;               /* Ocupa solo el 45% del ancho, tal como en la imagen */
+    width: 45%;
     padding: 12px;
     border: none;
     border-radius: 4px;
-    background-color: #4ca136;/* Verde oliva característico */
+    background-color: #4ca136;
     color: #ffffff;
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
 }
 
-/* --- Redirección Inferior (Sign Up) --- */
 .signup-redirect {
-    margin-top: 35px;         /* Espaciado superior para alejarlo del botón */
+    margin-top: 35px;
     font-size: 0.82rem;
     color: #b5b5b5;
 }
 
-/* Estilo para el link verde "Sign Up" */
 .signup-redirect a {
     color: #4ca136;
     text-decoration: none;
     font-weight: 600;
 }
 
-/* --- Lado Derecho (Imagen Completa) --- */
+/* --- Imagen de Portada (Lado Derecho) --- */
 .image-section {
-    width: 60%;               /* Ocupa el 60% restante de la tarjeta */
-    background-image: url('login.webp'); /* Llama a tu archivo de imagen local */
-    background-size: cover;   /* Escala la imagen para que cubra todo el espacio disponible */
-    background-position: center; /* Centra la imagen para que no se corte mal */
+    width: 60%;
+    background-image: url('../images/login.png');
+    background-size: cover;
+    background-position: center;
 }

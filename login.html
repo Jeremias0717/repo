@@ -1,69 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Urbee - Sign In</title>
-    <!-- Vincula este archivo HTML con la hoja de estilos externa -->
-    <link rel="stylesheet" href="login.css">
+    <title>Urbee - Iniciar Sesión</title>
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
 
-    <!-- Contenedor general que agrupa la tarjeta de login completa -->
     <div class="login-container">
-        
-        <!-- SECCIÓN IZQUIERDA: Contiene todo el formulario y textos -->
         <div class="form-section">
-            
-            <!-- Logo principal de la marca -->
             <div class="logo">urbee</div>
+            <h1 class="main-title">Bienvenido de nuevo</h1>
+            <p class="subtitle">Inicia sesión con tu dirección de correo electrónico y contraseña.</p>
             
-            <!-- Título de bienvenida principal -->
-            <h1 class="main-title">Welcome Back</h1>
-            
-            <!-- Subtítulo descriptivo debajo del título -->
-            <p class="subtitle">Sign in with your email address and Password.</p>
-            
-            <!-- Formulario de inicio de sesión (Apunta a proyecto.html al dar submit) -->
-            <form class="login-form" action="proyecto.html">
-                
-                <!-- Etiqueta del campo de correo electrónico -->
-                <label>Email Address</label>
-                
-                <!-- Contenedor relativo especial para añadir el check verde sobre el input -->
+            <form class="login-form" action="proyecto.html" id="loginForm">
+                <label>Correo Electrónico</label>
+                <!-- Wrapper con clase 'verified' para mostrar icono de verificación verde -->
                 <div class="input-wrapper verified">
-                    <input type="email" value="johndoe123@xyz.com" required>
+                    <input type="email" id="emailInput" value="johndoe123@xyz.com" required>
                 </div>
                 
-                <!-- Etiqueta del campo de contraseña -->
-                <label>Password</label>
-                <!-- Campo de contraseña (esconde los caracteres con puntos) -->
-                <input type="password" value="••••••••••••" required>
+                <label>Contraseña</label>
+                <input type="password" id="passwordInput" value="••••••••••••" required>
                 
-                <!-- Bloque de opciones inferiores (Recordarme y Olvidé mi contraseña) -->
                 <div class="form-options">
-                    <!-- Checkbox de "Remember me" envuelto en un label para que sea clicable en el texto -->
                     <label class="remember-me">
                         <input type="checkbox" checked>
-                        <span>Remember me</span>
+                        <span>Recordarme</span>
                     </label>
-                    <!-- Enlace para recuperar la contraseña -->
-                    <a href="#">Forgot Password?</a>
+                    <a href="#">¿Olvidaste tu contraseña?</a>
                 </div>
                 
-                <!-- Botón para procesar y enviar el formulario -->
-                <button type="submit" class="btn-login">Sign In</button>
+                <button type="submit" class="btn-login">Iniciar Sesión</button>
             </form>
             
-            <!-- Bloque inferior por si el usuario no tiene una cuenta creada -->
             <div class="signup-redirect">
-                Don't have an account? <a href="#">Sign Up</a>
+                ¿No tienes una cuenta? <a href="register.html">Regístrate</a>
             </div>
         </div>
 
-        <!-- SECCIÓN DERECHA: Espacio reservado para la imagen de fondo -->
         <div class="image-section"></div>
     </div>
 
+    <script src="js/login.js"></script>
 </body>
 </html>

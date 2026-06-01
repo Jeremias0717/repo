@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urbee - Registrarse</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="form-section">
+            <div class="logo">urbee</div>
+            <h1 class="main-title">Crear una cuenta</h1>
+            <p class="subtitle">Regístrate para empezar a organizar tus proyectos.</p>
+            
+            <form class="login-form" id="registerForm">
+                <label>Nombre Completo</label>
+                <input type="text" id="nameInput" placeholder="Ej. Juan Pérez" required>
+                
+                <label>Correo Electrónico</label>
+                <input type="email" id="emailInput" placeholder="Ej. juan@correo.com" required>
+                
+                <label>Contraseña</label>
+                <input type="password" id="passwordInput" placeholder="••••••••" minlength="6" required>
+                
+                <button type="submit" class="btn-login">Registrarse</button>
+            </form>
+            
+            <div class="signup-redirect">
+                ¿Ya tienes una cuenta? <a href="login.html">Iniciar Sesión</a>
+            </div>
+        </div>
+
+        <div class="image-section"></div>
+    </div>
+
+    <script src="js/register.js"></script>
+</body>
+</html>
