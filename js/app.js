@@ -2,6 +2,7 @@ let boards = JSON.parse(localStorage.getItem('trello-boards')) || [];
 let currentEditingCard = null;
 let currentBoardId = null;
 let currentListId = null;
+let draggedCard = null;
 
 const DEFAULT_LISTS = [
     { id: 1, title: 'Pendientes', status: 'pendiente', cards: [] },
@@ -10,6 +11,73 @@ const DEFAULT_LISTS = [
 ];
 
 document.addEventListener('DOMContentLoaded', function() {
+    initLoginForm();
+    initRegisterForm();
+    initBoardPage();
+});
+
+function initLoginForm() {
+    const loginForm = document.getElementById('loginForm');
+    if (!loginForm) {
+        return;
+    }
+
+    const savedEmail = localStorage.getItem('urbee-user-email');
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+
+    if (savedEmail && emailInput && passwordInput) {
+        emailInput.value = savedEmail;
+        if (savedEmail !== 'johndoe123@xyz.com') {
+            passwordInput.value = '';
+        }
+    }
+
+    if (emailInput && passwordInput) {
+        loginForm.addEventListener('submit', function() {
+            const email = emailInput.value.trim();
+            if (email === 'johndoe123@xyz.com') {
+                localStorage.setItem('urbee-user-name', 'John Doe');
+                localStorage.setItem('urbee-user-email', 'johndoe123@xyz.com');
+            } else if (email !== savedEmail) {
+                localStorage.setItem('urbee-user-name', email.split('@')[0]);
+                localStorage.setItem('urbee-user-email', email);
+            }
+        });
+    }
+}
+
+function initRegisterForm() {
+    const registerForm = document.getElementById('registerForm');
+    if (!registerForm) {
+        return;
+    }
+
+    const nameInput = document.getElementById('nameInput');
+    const emailInput = document.getElementById('emailInput');
+
+    registerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (!nameInput || !emailInput) {
+            return;
+        }
+
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+
+        localStorage.setItem('urbee-user-name', name);
+        localStorage.setItem('urbee-user-email', email);
+
+        window.location.href = 'proyecto.html';
+    });
+}
+
+function initBoardPage() {
+    const boardsContainer = document.getElementById('boardsContainer');
+    if (!boardsContainer) {
+        return;
+    }
+
     const userName = localStorage.getItem('urbee-user-name');
     if (userName) {
         const headerTitle = document.querySelector('.header h1');
@@ -17,23 +85,43 @@ document.addEventListener('DOMContentLoaded', function() {
             headerTitle.textContent = `Tablero de ${userName}`;
         }
     }
+
     renderBoards();
     setupDragAndDrop();
-});
+}
 
 function showAddBoardModal() {
-    document.getElementById('addBoardModal').style.display = 'flex';
-    document.getElementById('boardTitleInput').focus();
+    const modal = document.getElementById('addBoardModal');
+    const input = document.getElementById('boardTitleInput');
+    if (!modal || !input) {
+        return;
+    }
+
+    modal.style.display = 'flex';
+    input.focus();
 }
 
 function hideAddBoardModal() {
-    document.getElementById('addBoardModal').style.display = 'none';
-    document.getElementById('boardTitleInput').value = '';
+    const modal = document.getElementById('addBoardModal');
+    const input = document.getElementById('boardTitleInput');
+    if (!modal || !input) {
+        return;
+    }
+
+    modal.style.display = 'none';
+    input.value = '';
 }
 
 function createBoard() {
-    const title = document.getElementById('boardTitleInput').value.trim();
-    if (!title) return;
+    const boardTitleInput = document.getElementById('boardTitleInput');
+    if (!boardTitleInput) {
+        return;
+    }
+
+    const title = boardTitleInput.value.trim();
+    if (!title) {
+        return;
+    }
 
     // Clonamos profundamente los objetos de las listas por defecto para evitar que compartan
     // referencias de la propiedad 'cards' entre distintos tableros creados.
@@ -56,32 +144,60 @@ function createBoard() {
 
 function showEditCardModal(cardId, boardId, listId) {
     const board = boards.find(b => b.id === boardId);
-    if (!board) return;
+    if (!board) {
+        return;
+    }
+
     const list = board.lists.find(l => l.id === listId);
-    if (!list) return;
+    if (!list) {
+        return;
+    }
+
     const card = list.cards.find(c => c.id === cardId);
-    if (!card) return;
+    if (!card) {
+        return;
+    }
+
+    const titleInput = document.getElementById('cardTitleInput');
+    const descInput = document.getElementById('cardDescInput');
+    const modal = document.getElementById('editCardModal');
+    if (!titleInput || !descInput || !modal) {
+        return;
+    }
 
     currentEditingCard = card;
     currentBoardId = boardId;
     currentListId = listId;
 
-    document.getElementById('cardTitleInput').value = card.title || '';
-    document.getElementById('cardDescInput').value = card.description || '';
-    document.getElementById('editCardModal').style.display = 'flex';
-    document.getElementById('cardTitleInput').focus();
+    titleInput.value = card.title || '';
+    descInput.value = card.description || '';
+    modal.style.display = 'flex';
+    titleInput.focus();
 }
 
 function hideEditCardModal() {
-    document.getElementById('editCardModal').style.display = 'none';
+    const modal = document.getElementById('editCardModal');
+    if (!modal) {
+        return;
+    }
+
+    modal.style.display = 'none';
     currentEditingCard = null;
 }
 
 function saveCard() {
-    if (!currentEditingCard || !currentBoardId || !currentListId) return;
+    if (!currentEditingCard || !currentBoardId || !currentListId) {
+        return;
+    }
 
-    currentEditingCard.title = document.getElementById('cardTitleInput').value.trim();
-    currentEditingCard.description = document.getElementById('cardDescInput').value.trim();
+    const titleInput = document.getElementById('cardTitleInput');
+    const descInput = document.getElementById('cardDescInput');
+    if (!titleInput || !descInput) {
+        return;
+    }
+
+    currentEditingCard.title = titleInput.value.trim();
+    currentEditingCard.description = descInput.value.trim();
     currentEditingCard.updatedAt = new Date().toISOString();
 
     saveData();
@@ -105,6 +221,10 @@ function deleteCard(cardId, boardId, listId) {
 
 function renderBoards() {
     const container = document.getElementById('boardsContainer');
+    if (!container) {
+        return;
+    }
+
     if (boards.length === 0) {
         container.innerHTML = `
             <div style="padding: 60px 40px; text-align: center; color: #6b778c; background: white; border-radius: 12px; width: 100%;">
@@ -235,8 +355,6 @@ function setupDragAndDrop() {
     });
 }
 
-let draggedCard = null;
-
 function handleDragStart(e) {
     draggedCard = e.target;
     e.target.style.opacity = '0.7';
@@ -257,13 +375,18 @@ function handleDragOver(e) {
 }
 
 function handleDragEnter(e) {
+    const zone = e.target.closest('.cards-container');
+    if (!zone) {
+        return;
+    }
+
     e.preventDefault();
-    e.target.closest('.cards-container').classList.add('drag-over');
+    zone.classList.add('drag-over');
 }
 
 function handleDragLeave(e) {
     const zone = e.target.closest('.cards-container');
-    if (!zone.contains(e.relatedTarget)) {
+    if (zone && !zone.contains(e.relatedTarget)) {
         zone.classList.remove('drag-over');
     }
 }
@@ -271,6 +394,10 @@ function handleDragLeave(e) {
 function handleDrop(e) {
     e.preventDefault();
     const dropZone = e.target.closest('.cards-container');
+    if (!dropZone) {
+        return;
+    }
+
     dropZone.classList.remove('drag-over');
 
     if (draggedCard && dropZone) {
@@ -311,16 +438,16 @@ function saveData() {
     localStorage.setItem('trello-boards', JSON.stringify(boards));
 }
 
-window.onclick = function (event) {
+window.onclick = function(event) {
     const modals = document.querySelectorAll('.input-modal');
     modals.forEach(modal => {
         if (event.target === modal) {
             modal.style.display = 'none';
         }
     });
-}
+};
 
-document.addEventListener('keydown', function (e) {
+document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         hideAddBoardModal();
         hideEditCardModal();
